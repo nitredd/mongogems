@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require_relative '../lib/savedPipeline'
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = 'Usage: compass2mongosh [options]'
+
+  opts.on('-i', '--input=INFILE', 'Input file from compass') do |val|
+    options[:input] = val
+  end
+
+  opts.on('-o', '--output=OUTFILE', 'Output file to write to') do |val|
+    options[:output] = val
+  end
+
+  opts.on('-h', '--help', 'Help') do |val|
+    puts opts
+    exit
+  end
+end.parse!
+
+if options[:input].nil?
+  puts 'Missing arguments. Execute with -h for help'
+  exit
+end
+
+pipeline_to_mongosh_script options[:input], options[:output]
