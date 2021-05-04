@@ -1,3 +1,3 @@
 source 'https://rubygems.org' do
-  # gem 'openssl', '2.2.0'
+  # gem 'hjson', '0.1.2'
 end

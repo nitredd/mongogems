@@ -1,4 +1,5 @@
 require 'json'
+# require 'hjson'
 
 # filename = '/Users/nitin/Downloads/Zaloni-DQ-A/607d7460cb21963a143d1d0f.json'
 
@@ -10,17 +11,27 @@ def pipeline_to_mongosh_script(infile, outfile)
   dbname = ns_split[0]
   collname = ns_split[1]
 
-  the_pipeline = []
+  the_pipeline = "[\n"
+  is_first = true
   data['pipeline'].each do |pstage|
-    the_pipeline.push pstage['executor']
+    if is_first
+      is_first = false
+    else
+      the_pipeline += ', '
+    end
+    stage_txt = pstage['stage']
+    stage_txt = stage_txt.gsub("\\r", "\r").gsub("\\n", "\n")
+    the_pipeline += "{ #{pstage['stageOperator']}: " + stage_txt + " }"
   end
+  the_pipeline += "\n]"
 
   mongosh_script_out =
-"
-//Query name: #{data['name']}
+"//Query name: #{data['name']}
+
 use #{dbname};
+
 db.#{collname}.aggregate(
-#{JSON.generate the_pipeline}
+" + the_pipeline + "
 , {allowDiskUse: true}
 );
 "

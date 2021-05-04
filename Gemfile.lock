@@ -1,11 +1,15 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    hjson (0.1.2)
+      json (>= 1.7.5)
+    json (2.5.1)
 
 PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
+  hjson (= 0.1.2)!
 
 BUNDLED WITH
    2.2.12
