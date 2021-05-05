@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require_relative '../lib/logs'
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = 'Usage: mongolog2file [options]'
+
+  opts.on('-o', '--output=OUTFILE', 'Output file to write to') do |val|
+    options[:output] = val
+  end
+
+  opts.on('-uri', '--uri=URI', 'URI to MongoDB') do |val|
+    options[:uri] = val
+  end
+
+  opts.on('-h', '--help', 'Help') do |val|
+    puts opts
+    exit
+  end
+end.parse!
+
+if options[:output].nil?
+  puts 'Missing arguments. Execute with -h for help'
+  exit
+end
+
+get_logs options[:uri], options[:output]
+

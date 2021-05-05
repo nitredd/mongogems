@@ -1,3 +1,3 @@
 source 'https://rubygems.org' do
-  # gem 'hjson', '0.1.2'
+  gem 'mongo', '2.14.0'
 end
