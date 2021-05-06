@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require_relative '../lib/indexes'
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = 'Usage: mongoindex2file [options]'
+
+  opts.on('-o', '--output=OUTFILE', 'Output file to write to') do |val|
+    options[:output] = val
+  end
+
+  opts.on('-uri', '--uri=URI', 'URI to MongoDB') do |val|
+    options[:uri] = val
+  end
+
+  opts.on('-d', '--database=DB', '(optional) Database to fetch indexes from') do |val|
+    options[:db] = val
+  end
+
+  opts.on('-c', '--collection=COLL', '(optional) Collection to fetch indexes from') do |val|
+    options[:coll] = val
+  end
+
+  opts.on('-h', '--help', 'Help') do |val|
+    puts opts
+    exit
+  end
+end.parse!
+
+if options[:output].nil?
+  puts 'Missing arguments. Execute with -h for help'
+  exit
+end
+
+get_indexes_script options[:uri], options[:db], options[:coll], options[:output]
