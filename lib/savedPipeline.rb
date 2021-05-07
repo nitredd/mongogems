@@ -14,6 +14,10 @@ def pipeline_to_mongosh_script(infile, outfile)
   the_pipeline = "[\n"
   is_first = true
   data['pipeline'].each do |pstage|
+    if not pstage["isEnabled"]
+      next
+    end
+
     if is_first
       is_first = false
     else
