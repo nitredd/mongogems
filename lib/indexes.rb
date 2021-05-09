@@ -30,11 +30,20 @@ def get_indexes_script(uri, db_name=nil, coll_name=nil, outfile)
     if coll_name.nil?
       colls = client.collections
     else
-      colls = [coll_name]
+      colls = [
+        client[coll_name]
+      ]
     end
 
     colls.each do |coll|
       coll.indexes.each do |idx|
+
+        #Skip the _id index
+        l_idx_cols = idx['key'].to_h.keys
+        if l_idx_cols.length == 1 and l_idx_cols.first == '_id'
+          next
+        end
+
         txt = gen_idx_script idx, coll.name
         scripts.push txt
       end
@@ -62,5 +71,5 @@ def gen_idx_script(idIndex, collname)
   txt = "db.#{collname}.createIndex(#{idx_spec}, #{opt_spec});"
 end
 
-# script = (get_indexes_script 'mongodb://localhost').join "\n"
-# puts script
+# mdb_uri = 'mongodb://localhost'
+# get_indexes_script mdb_uri, nil, nil, 'idx_out.txt'
