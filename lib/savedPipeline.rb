@@ -32,9 +32,7 @@ def pipeline_to_mongosh_script(infile, outfile)
   mongosh_script_out =
 "//Query name: #{data['name']}
 
-use #{dbname};
-
-db.#{collname}.aggregate(
+db.getSiblingDB('#{dbname}').#{collname}.aggregate(
 " + the_pipeline + "
 , {allowDiskUse: true}
 );
