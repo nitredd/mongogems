@@ -26,7 +26,7 @@ def get_indexes_script(uri, db_name=nil, coll_name=nil, outfile)
 
   db_list.each do |iter_db|
     client = client.use iter_db
-    scripts.push "use #{iter_db};"
+    scripts.push "db = db.getSiblingDB('#{iter_db}')';"
     if coll_name.nil?
       colls = client.collections
     else
