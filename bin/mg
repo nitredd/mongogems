@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'optparse'
 require_relative '../lib/config'
+require 'shellwords'
 
 options = {}
 
@@ -43,6 +44,23 @@ Commands:
  help
 '
   exit
+when 'shell', 's'
+  options[:cmd] = 'shell'
+  m_uri = read_config_entry 'uri'
+  if m_uri.nil?
+    puts 'URI not found in config.
+Must set URI with: mg config set uri YOUR_URI_HERE
+Example: mg config set uri \'mongodb://username:password@localhost:27017\'
+'
+    exit
+  end
+  remaining_cmds = ARGV.map{|arg| Shellwords.escape arg}.join ' '
+  cmdstr = "mongo #{m_uri} #{remaining_cmds}"
+  exec(cmdstr)
+# when 'echo'
+#   remaining_cmds = ARGV.map{|arg| Shellwords.escape arg}.join ' '
+#   puts remaining_cmds
+#   exec("echo #{remaining_cmds}")
 else
   puts 'Unrecognized command'
   exit -1

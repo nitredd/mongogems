@@ -12,7 +12,9 @@ Needs Ruby installed.
 
 Converts the MongoDB saved pipeline to a Mongo shell script
 
-Example: `compass2mongosh --input=19031955.js --output=20091983.js`
+Example: 
+
+`compass2mongosh --input=19031955.js --output=20091983.js`
 
 See notes for the filesystem path of the saved pipelines.
 
@@ -20,13 +22,28 @@ See notes for the filesystem path of the saved pipelines.
 
 Generates a script to re-create indexes for a collection
 
-Example: `mongoindex2file --uri='mongodb://localhost' -d test -c person -o person_idx.js` 
+Example: 
+
+`mongoindex2file --uri='mongodb://localhost' -d test -c person -o person_idx.js` 
 
 ## mongolog2file
 
 Fetches the log from the MongoDB instance and writes to a file
 
-Example: `mongolog2file --uri='mongodb://localhost' -o mongod.log`
+Example: 
+
+`mongolog2file --uri='mongodb://localhost' -o mongod.log`
+
+## mg
+
+Helps avoid repetitive work by saving the MongoDB URI. 
+Subsequently invoking the shell with "mg s" will use the URI from the saved config.
+
+Example:
+
+`mg config set uri 'mongodb://username:password@localhost'`
+
+`mg s --eval 'db.getCollectionInfos()''`
 
 # Notes
 

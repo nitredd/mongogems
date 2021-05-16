@@ -4,7 +4,6 @@ require 'json'
 def get_indexes_script(uri, db_name=nil, coll_name=nil, outfile)
   client = Mongo::Client.new(uri)
 
-
   db_list = []
   if not db_name.nil?
     db_list.push db_name
@@ -14,13 +13,6 @@ def get_indexes_script(uri, db_name=nil, coll_name=nil, outfile)
       db_list.push iter_db_name
     end
   end
-
-  # client = client.use 'test'
-
-  # cur = client.command listCollections: 1
-  # rset = cur.to_a
-  # rset = rset.first['cursor']['firstBatch']
-  # rset
 
   scripts = []
 
@@ -70,6 +62,3 @@ def gen_idx_script(idIndex, collname)
   opt_spec = JSON.dump idx_options
   txt = "db.#{collname}.createIndex(#{idx_spec}, #{opt_spec});"
 end
-
-# mdb_uri = 'mongodb://localhost'
-# get_indexes_script mdb_uri, nil, nil, 'idx_out.txt'
