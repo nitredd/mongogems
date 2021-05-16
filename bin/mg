@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require_relative '../lib/config'
+
+options = {}
+
+case ARGV.shift
+when 'config'
+  options[:cmd] = 'config'
+  case ARGV.shift
+  when 'set'
+    options[:subcmd] = 'set'
+    key = ARGV.shift
+    value = ARGV.join ' '
+    options[:key] = key
+    options[:val] = value
+
+    write_config_entry options[:key], options[:val]
+  when 'get'
+    options[:subcmd] = 'get'
+    key = ARGV.shift
+    options[:key] = key
+
+    val = read_config_entry options[:key]
+    puts "Config for #{options[:key]} is #{val}"
+  when 'help'
+    puts '
+Usage: mg config [subcommand] ...
+Commands:
+ get KEY
+ set KEY VALUE
+'
+    exit
+  else
+    puts "Unrecognized #{options[:cmd]} command"
+    exit -1
+  end
+when 'help', '--help', '-h', '-?'
+  puts '
+Usage: mg [command] [subcommand] ...
+Commands:
+ config
+ help
+'
+  exit
+else
+  puts 'Unrecognized command'
+  exit -1
+end
+
+
